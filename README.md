@@ -110,9 +110,15 @@ node scripts/digest.mjs --scheduled
 
 开关外观是液态玻璃：SVG `feDisplacementMap` 做折射，`backdrop-filter: url(#...)` 引用它。纯 CSS 的 `blur()` 只能磨砂，做不出透镜。没有 canvas 的环境（jsdom、旧内核）会退化成普通模糊，开关照常能用。
 
+<img src="docs/screenshots/switch-light.png" width="360" alt="浅色">
+<img src="docs/screenshots/switch-dark.png" width="360" alt="深色">
+
+滑块里的位移图是运行时用 Canvas 逐像素画的（4× 超采样后降采样），不是打包进来的位图 —— 96×96 的灰度法线图直接内联会撑大 bundle，画一遍只要几毫秒。
+
 ## 已知限制
 
 - 只做了 macOS 上的验证。`login-cdp.mjs` 里的 `osascript` 抬窗是 macOS 专用，其他平台会跳过。
+- 面板宽度是按侧栏（约 380px）排的三列，窗口拉很宽时卡片会显得空。
 - 学习通 / MOOC / 智慧树的抓取依赖页面结构，对方改版就可能失效。
 - 1系统公告的 `sessionId` 只有几小时有效期，过期后刷新会自动重登一次（可能弹窗）。
 - 面板不轮询。想要新数据就点刷新。
