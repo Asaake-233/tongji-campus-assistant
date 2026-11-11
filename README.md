@@ -32,6 +32,7 @@ DSH 左侧栏的一个面板插件：把同济的课程作业、通知公告和�
 结果缓存在本地，打开面板先显示上次的，点刷新才重新抓。抓取需要登录态，第一次会弹一个 Chrome 窗口让你登录，之后静默复用。
 
 <img src="docs/screenshots/panel-links-light.png" width="380" alt="查询与入口">
+<img src="docs/screenshots/panel-search.png" width="380" alt="搜索">
 
 上面的截图用的是编造的演示数据 —— 真实面板里是你的课程名和通知标题。
 
