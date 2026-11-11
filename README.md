@@ -2,18 +2,24 @@
 
 DSH 左侧栏的一个面板插件：把同济的课程作业、通知公告和常用校园入口收在一处。
 
-<img src="docs/screenshots/panel-light.png" width="420" alt="浅色">
-<img src="docs/screenshots/panel-dark.png" width="420" alt="深色">
+<img src="docs/screenshots/panel-light.png" width="380" alt="待办与公告">
+<img src="docs/screenshots/panel-dark.png" width="380" alt="深色模式">
 
 ## 它做什么
 
-面板分两块：
+面板上有三类东西：
 
-**查询卡** —— 点一下，把一句写好的指令填进当前会话的输入框，回车执行。实际查询由 [tongji-online](https://github.com/JERRIYHAN/tongji-online) 技能完成，登录在你本机的浏览器里进行，凭据不经过这个插件。
+### 查询卡
 
-**入口卡** —— 用系统浏览器打开对应网站。目前 29 个，按教学、校园服务、学术资源等分了 6 组，顶部搜索框可以按名称或拼音首字母过滤。
+点一下，把一句写好的指令填进当前会话的输入框，回车执行。实际查询由 [tongji-online](https://github.com/JERRIYHAN/tongji-online) 技能完成，登录在你本机的浏览器里进行，凭据不经过这个插件。
 
-**待办与公告** —— 五路数据汇总，每张卡一个刷新按钮，不轮询：
+### 入口卡
+
+用系统浏览器打开对应网站。目前 29 个，按教学、校园服务、学术资源等分了 6 组，顶部搜索框可以按名称或拼音首字母过滤。
+
+### 待办与公告
+
+五路数据汇总，每张卡一个刷新按钮，不轮询：
 
 | 来源 | 内容 |
 |---|---|
@@ -24,6 +30,10 @@ DSH 左侧栏的一个面板插件：把同济的课程作业、通知公告和�
 | 智慧树 | 待完成任务 |
 
 结果缓存在本地，打开面板先显示上次的，点刷新才重新抓。抓取需要登录态，第一次会弹一个 Chrome 窗口让你登录，之后静默复用。
+
+<img src="docs/screenshots/panel-links-light.png" width="380" alt="查询与入口">
+
+上面的截图用的是编造的演示数据 —— 真实面板里是你的课程名和通知标题。
 
 ## 安装
 
