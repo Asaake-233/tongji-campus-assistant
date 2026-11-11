@@ -1,0 +1,15 @@
+node_modules/
+loaded.log
+
+# 登录态、缓存、开关都在这里，绝不提交
+.dsh/
+state/
+panel-cache.json
+settings.json
+session.json
+panel-cookies/
+chrome-login-profile/
+
+# 抓取时 Chrome 落下的临时文件
+*.log
+.DS_Store

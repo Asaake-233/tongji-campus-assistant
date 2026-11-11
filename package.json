@@ -1,0 +1,43 @@
+{
+  "name": "tongji-online-sidebar",
+  "version": "0.1.0",
+  "description": "同济校园助手：DSH 左侧栏面板，把课程作业、通知公告、校园入口收在一处，可一键填进会话",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "tongji",
+    "campus",
+    "canvas"
+  ],
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "scripts",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "bin": {
+    "tongji-digest": "scripts/digest.mjs"
+  },
+  "scripts": {
+    "smoke": "node scripts/smoke.mjs",
+    "digest": "node scripts/digest.mjs"
+  },
+  "dsh": {
+    "client": {
+      "platform": "web",
+      "inject": []
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
