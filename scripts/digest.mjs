@@ -157,9 +157,10 @@ const section = (title, list, formatter) => {
 
 // Canvas 的 extra 里带着「已提交 / 待提交 · 还剩 N 小时」，摘要要能看出交没交，所以一并带上。
 const fmt = (item) => {
-	// Canvas 的 extra 里已经有「还剩 N 天」，别再补一遍。
+	// extra 里已经有「还剩 N 天」就别补；已逾期的 left 是负数，补出来是「剩 -22 天」，也跳过。
 	const hasLeft = String(item.extra ?? "").includes("剩");
-	const tail = [item.meta, item.extra, item.left === null || hasLeft ? "" : `剩 ${item.left} 天`].filter(Boolean).join(" · ");
+	const skipLeft = item.left === null || item.left < 0 || hasLeft;
+	const tail = [item.meta, item.extra, skipLeft ? "" : `剩 ${item.left} 天`].filter(Boolean).join(" · ");
 	return `${item.title}｜${item.label}${tail ? `｜${tail}` : ""}`;
 };
 
@@ -185,13 +186,18 @@ if (notices.length) {
 
 // 「需要动手」只算还没交的：Canvas 的已提交项虽然还没到截止时间，但不需要再做什么。
 const pending = (list) => list.filter((item) => !String(item.extra ?? "").includes("已提交"));
+const undatedPending = pending(buckets.undated).length;
 const urgent = pending(buckets.overdue).length + pending(buckets.today).length + pending(buckets.soon).length;
 const submitted = buckets.soon.length + buckets.today.length - pending(buckets.soon).length - pending(buckets.today).length;
 lines.push("");
 if (urgent) {
 	lines.push(`需要动手：${urgent} 项（逾期 ${pending(buckets.overdue).length} / 今天 ${pending(buckets.today).length} / 三天内 ${pending(buckets.soon).length}）`);
+	if (undatedPending) lines.push(`另外 ${undatedPending} 项没写截止时间，也别忘（见上面「没有截止时间」）`);
 } else if (submitted) {
 	lines.push(`三天内没有要交的东西（${submitted} 项已提交，等成绩即可）`);
+	if (undatedPending) lines.push(`但还有 ${undatedPending} 项没写截止时间的作业没交`);
+} else if (undatedPending) {
+	lines.push(`三天内没有要交的东西，但有 ${undatedPending} 项没写截止时间的作业没交`);
 } else {
 	lines.push("三天内没有要交的东西");
 }
