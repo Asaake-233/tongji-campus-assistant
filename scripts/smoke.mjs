@@ -23,7 +23,7 @@ ok("缓存文件", existsSync(CACHE_FILE) ? CACHE_FILE : "（还没有，刷新�
 
 console.log("\n外部依赖");
 existsSync(SKILL)
-	? ok("tongji-online 技能", SKILL)
+	? ok("tongji-campus 技能", SKILL)
 	: bad("找不到技能脚本", `设置 TONGJI_ONLINE_SKILL 指向 run.mjs（当前找的是 ${SKILL}）`);
 existsSync(PLAYWRIGHT)
 	? ok("Playwright", PLAYWRIGHT)

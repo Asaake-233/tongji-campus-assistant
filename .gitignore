@@ -13,3 +13,6 @@ chrome-login-profile/
 # 抓取时 Chrome 落下的临时文件
 *.log
 .DS_Store
+
+# 技能依赖，安装时 npm install 现装
+skills/*/node_modules/

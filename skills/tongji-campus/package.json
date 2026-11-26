@@ -1,0 +1,17 @@
+{
+	"name": "tongji-campus",
+	"version": "1.0.0",
+	"private": true,
+	"type": "module",
+	"description": "同济大学校园信息查询：Canvas 课程作业、图书馆馆藏与借阅、1 系统公告课表、一卡通、图书馆座位",
+	"bin": { "tongji-campus": "./scripts/run.mjs" },
+	"scripts": {
+		"doctor": "node scripts/run.mjs doctor",
+		"login": "node scripts/run.mjs auth login --service all",
+		"status": "node scripts/run.mjs auth status"
+	},
+	"engines": { "node": ">=22" },
+	"dependencies": {
+		"playwright-core": "^1.64.1"
+	}
+}

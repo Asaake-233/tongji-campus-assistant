@@ -11,7 +11,7 @@ DSH 左侧栏的一个面板插件：把同济的课程作业、通知公告和�
 
 ### 查询卡
 
-点一下，把一句写好的指令填进当前会话的输入框，回车执行。实际查询由 [tongji-online](https://github.com/JERRIYHAN/tongji-online) 技能完成，登录在你本机的浏览器里进行，凭据不经过这个插件。
+点一下，把一句写好的指令填进当前会话的输入框，回车执行。实际查询由同仓库里的 [`skills/tongji-campus`](skills/tongji-campus) 技能完成，登录在你本机的浏览器里进行，凭据不经过这个插件。
 
 ### 入口卡
 
@@ -46,23 +46,36 @@ Canvas 那一栏特意没走技能自带的 `canvas upcoming`：它会丢掉 `du
 
 ## 安装
 
-需要 DSH Desktop，并且已经装了 `tongji-online` 技能（查询卡依赖它）。
+需要 DSH Desktop。仓库里有两部分：
+
+- `lib/` `scripts/` —— 面板插件本体
+- `skills/tongji-campus/` —— 查询卡依赖的技能，负责登录和各站点查询
 
 ```bash
-# 1. 把仓库放到工作区
-git clone https://github.com/<you>/tongji-online-sidebar.git \
-  "<工作区>/.dsh/plugins/tongji-online-sidebar"
+git clone https://github.com/Asaake-233/tongji-campus-assistant.git /tmp/tjca
 
-# 2. 让 DSH 加载它
-dsh plugin --profile desktop add "<工作区>/.dsh/plugins/tongji-online-sidebar"
+# 1. 技能装到全局（所有工作区都能用）
+cp -R /tmp/tjca/skills/tongji-campus ~/.dsh/skills/
+cd ~/.dsh/skills/tongji-campus && npm install --omit=dev   # 装 playwright-core
+
+# 2. 插件本体放到插件目录（技能不用重复拷）
+mkdir -p ~/.dsh/plugins/tongji-online-sidebar
+cp -R /tmp/tjca/lib /tmp/tjca/scripts /tmp/tjca/docs \
+      /tmp/tjca/package.json /tmp/tjca/README.md /tmp/tjca/LICENSE \
+      ~/.dsh/plugins/tongji-online-sidebar/
+
+# 3. 让 DSH 加载它
+dsh plugin --profile desktop add ~/.dsh/plugins/tongji-online-sidebar
 ```
+
+技能的 `node_modules/` 没有提交（13M，`playwright-core` 而已），所以第 1 步要跑一次 `npm install`。
 
 插件没有构建步骤，`lib/` 里就是最终代码。装完**完全退出并重开** DSH（⌘Q，不是 ⌘R）—— 宿主那一半不会热重载。
 
 先跑一次自检，比直接开面板更容易看出哪里没配对：
 
 ```bash
-cd "<工作区>/.dsh/plugins/tongji-online-sidebar"
+cd ~/.dsh/plugins/tongji-online-sidebar
 node scripts/smoke.mjs
 ```
 
@@ -70,13 +83,13 @@ node scripts/smoke.mjs
 
 ## 配置
 
-路径都能用环境变量覆盖，默认值假设插件装在 `<工作区>/.dsh/plugins/` 下：
+路径都能用环境变量覆盖，默认值假设插件装在 `~/.dsh/plugins/`、技能装在 `~/.dsh/skills/` 下：
 
 | 变量 | 默认 | 用途 |
 |---|---|---|
-| `DSH_WORKSPACE` | 从插件位置往上推四层 | 工作区根 |
-| `TONGJI_ONLINE_SKILL` | `<工作区>/.dsh/skills/tongji-online/scripts/run.mjs` | 技能入口 |
-| `TONGJI_ONLINE_HOME` | `<工作区>/.dsh/state/tongji-online` | 登录态、缓存、开关 |
+| `DSH_WORKSPACE` | 用户主目录 | 工作区根 |
+| `TONGJI_ONLINE_SKILL` | `~/.dsh/skills/tongji-campus/scripts/run.mjs` | 技能入口 |
+| `TONGJI_ONLINE_HOME` | `~/.dsh/state/tongji-online` | 登录态、缓存、开关 |
 | `TONGJI_ONLINE_PLAYWRIGHT` | 技能里的 `playwright-core` | Playwright |
 | `TONGJI_ONLINE_CHROME` | 按平台猜 | Chrome 可执行文件 |
 | `TONGJI_ONLINE_CDP_PORT` | `9333` | 登录窗口的调试端口 |
@@ -110,6 +123,7 @@ node scripts/digest.mjs --scheduled
 - `lib/scrape.mjs` —— 学习通 / MOOC / 智慧树的抓取，spawn 成独立进程跑 Playwright，不把浏览器塞进 Electron 主进程。
 - `lib/login-cdp.mjs` —— 登录窗口。直接 spawn Chrome 可执行文件并开 CDP 端口，因为 `open -na --args` 会把参数丢掉、端口起不来。
 - `lib/config.mjs` —— 所有路径解析都在这，别处不再拼路径。
+- `skills/tongji-campus/` —— 独立的命令行技能，插件通过 `spawn` 调它（目前只用来做重新登录）。查询卡点下去只是把提示词填进会话，由 AI 去读技能文档再执行。
 
 **关于那几个网页版没有待办页的**：MOOC 和智慧树的网页端没有跨课程的待办列表，所以这两张卡显示的是能拿到的东西 —— MOOC 显示 SPOC 课程进度，智慧树显示 `studyTask` 里的未完成任务。学习通的「待办」实际是收件箱通知流。
 

@@ -1,6 +1,6 @@
 {
   "name": "tongji-online-sidebar",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "同济校园助手：DSH 左侧栏面板，把课程作业、通知公告、校园入口收在一处，可一键填进会话",
   "type": "module",
   "license": "MIT",
